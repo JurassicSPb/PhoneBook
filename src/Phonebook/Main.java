@@ -9,13 +9,13 @@ public static void main (String [] args)
 {
 System.out.println ("Телефонная книга.");
 Scanner sc = new Scanner (System.in);
-ArrayList<Contacts> list = new ArrayList<>();
+ArrayList<Contact> list = new ArrayList<>();
 
 while (true) {
     System.out.println ("Menu: \n 1. Добавить контакт \n 2. Показать все контакты \n 3. Выход \n 4. Удалить контакт");
     int i = sc.nextInt();
     if (i==1) {
-        Contacts book = new Contacts();
+        Contact book = new Contact();
         System.out.println("Введите имя: ");
         book.name = sc.next();
         System.out.println("Введите телефон: ");
@@ -39,7 +39,7 @@ while (true) {
                 char right = list.get(j + 1).name.toCharArray()[0];
                 if (left > right)
                 {
-                    Contacts temp = list.get(j);
+                    Contact temp = list.get(j);
                     list.set(j, list.get(j + 1));
                     list.set((j + 1), temp);
                 }
