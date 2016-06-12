@@ -9,13 +9,13 @@ public static void main (String [] args)
 {
 System.out.println ("Телефонная книга.");
 Scanner sc = new Scanner (System.in);
-ArrayList<PhoneBook> list = new ArrayList<>();
+ArrayList<Contacts> list = new ArrayList<>();
 
 while (true) {
-    System.out.println ("Menu: \n 1. Добавить контакт \n 2. Показать все контакты \n 3. Выход");
+    System.out.println ("Menu: \n 1. Добавить контакт \n 2. Показать все контакты \n 3. Выход \n 4. Удалить контакт");
     int i = sc.nextInt();
     if (i==1) {
-        PhoneBook book = new PhoneBook();
+        Contacts book = new Contacts();
         System.out.println("Введите имя: ");
         book.name = sc.next();
         System.out.println("Введите телефон: ");
@@ -39,7 +39,7 @@ while (true) {
                 char right = list.get(j + 1).name.toCharArray()[0];
                 if (left > right)
                 {
-                    PhoneBook temp = list.get(j);
+                    Contacts temp = list.get(j);
                     list.set(j, list.get(j + 1));
                     list.set((j + 1), temp);
                 }
@@ -54,6 +54,28 @@ while (true) {
     {
         System.out.println ("Выход из программы");
         break;
+    }
+    else if (i==4)
+    {
+        if (list.size()==0)
+        {
+            System.out.println ("Телефонная книга пустая.");
+            continue;
+        }
+       for (int j=0; j<list.size(); j++)
+        {
+            System.out.println(list.get(j).name);
+        }
+        System.out.println ("Введите имя из списка для удаления: ");
+        String str = sc.next();
+        for (int j=0; j<list.size(); j++)
+        {
+            if (str.equals(list.get(j).name))
+            {
+                list.remove(j);
+                break;
+            }
+        }
     }
     else
     {
