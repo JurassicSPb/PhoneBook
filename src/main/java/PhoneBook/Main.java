@@ -38,8 +38,12 @@ public class Main {
 //                }
 //            }
 //        }
+        ContactSync sync = new ContactSync();
+        sync.run();
+
 
         ArrayList<DetailContact> contacts = new ArrayList<>();
+        Gson gson = new Gson();
         File inputFile = new File("contacts.txt");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Comparator<Contact> compByNameAscending = (name1, name2) -> name1.getName().compareTo(name2.getName());
@@ -78,6 +82,7 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         panel.setLayout(null);
+        frame.setResizable(false);
         frame.setContentPane(panel);
         b1.addActionListener(new ActionListener() {
             @Override
@@ -85,7 +90,6 @@ public class Main {
                 try {
                     DetailContact book = new DetailContact();
                     PrintWriter writer = new PrintWriter(new FileOutputStream(inputFile, true));
-
                     String name = JOptionPane.showInputDialog(frame, "Введите имя:", "Введите значение", JOptionPane.WARNING_MESSAGE);
                     book.setName(name);
                     while (true) {
@@ -120,11 +124,13 @@ public class Main {
                     }
                     contacts.clear();
                     writer.close();
+
                     writeSerialize(book);
 
-                    Gson gson = new Gson();
+                    FileWriter gsonWriter = new FileWriter("gson.json");
                     String json = gson.toJson(book);
-                    System.out.println(json);
+                    gsonWriter.write(json);
+                    gsonWriter.close();
 
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, "Отмена");
@@ -145,7 +151,11 @@ public class Main {
                     }
                     JOptionPane.showMessageDialog(null, line, "Контакты из readerFromFile", JOptionPane.PLAIN_MESSAGE);
                     readerFromFile.close();
+
                     JOptionPane.showMessageDialog(null, readSerialize().getName() + ", " + readSerialize().getAddress(), "Контакты из Serialize", JOptionPane.PLAIN_MESSAGE);
+                    DetailContact newBook = gson.fromJson(new FileReader("gson.json"), DetailContact.class);
+                    JOptionPane.showMessageDialog(null, newBook.getName(), "Контакты из json", JOptionPane.PLAIN_MESSAGE);
+
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, "Отмена");
                 } catch (ArrayIndexOutOfBoundsException ea) {
@@ -280,7 +290,7 @@ public class Main {
             }
         });
     }
-        public static void writeSerialize(Serializable object) {
+    public static void writeSerialize(Serializable object) {
         try {
             FileOutputStream fileOutputStream = new FileOutputStream("user1.data", true);
             ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream);
@@ -309,5 +319,4 @@ public class Main {
         }
         return null;
     }
-
 }
